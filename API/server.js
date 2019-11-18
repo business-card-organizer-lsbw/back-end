@@ -3,8 +3,10 @@ const helmet = require("helmet");
 const cors = require("cors");
 require("dotenv").config();
 
-const authRouter = require("../auth/auth-router");
-const usersRouter = require("../users/users-router");
+const authRouter = require("../router/auth/auth-router");
+const usersRouter = require("../router/users/users-router");
+const cardsRouter = require("../router/cards/cards-router");
+const eventsRouter = require("../router/events/events-router");
 
 const server = express();
 
@@ -14,6 +16,8 @@ server.use(cors());
 
 server.use("/api/auth", authRouter);
 server.use("/api/users", usersRouter);
+server.use("/api/cards", cardsRouter);
+server.use("/api/events", eventsRouter);
 
 server.get("/", (req, res) => {
 	res.send("Business card server is working!");
