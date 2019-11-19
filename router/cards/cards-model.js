@@ -30,6 +30,12 @@ function findByFirstName(first_name) {
 		.first();
 }
 
+// // SQLITE3
+// function add(card) {
+// 	return db("cards").insert(card);
+// }
+
+// Postgres
 async function add(card) {
 	const [newCard] = await db("cards")
 		.insert(card)

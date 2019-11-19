@@ -1,4 +1,4 @@
-const db = require("../data/dbConfig");
+const db = require("../../data/dbConfig");
 
 module.exports = {
 	add,
@@ -22,13 +22,13 @@ function findById(id) {
 		.first()
 		.select("username", "id", "role");
 }
-// SQLITE3
+
+// //SQLITE3;
 // async function add(user) {
 // 	return await db("users").insert(user);
 // }
 
 // Postgres
-
 async function add(user) {
 	const [newUser] = await db("users")
 		.insert(user)
