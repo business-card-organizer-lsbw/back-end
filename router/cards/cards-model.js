@@ -41,9 +41,17 @@ async function add(card) {
 		.insert(card)
 		.returning("*");
 
-	return newCard;
-}
+// 	return newCard;
+// }
 
+// //SQLITE3
+// function update(changes, id) {
+// 	return db("cards")
+// 		.where({ id })
+// 		.update(changes);
+// }
+
+// Postgres
 async function update(updated, id) {
 	const [updatedCard] = await db("cards")
 		.where({ id })
