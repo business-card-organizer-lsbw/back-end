@@ -45,13 +45,14 @@ router.post("/", restricted, (req, res) => {
 
 	Cards.add(cardData)
 		.then(card => {
+			const id = card.id;
 			axios
 				.post(
-					`https://api.qrserver.com/v1/create-qr-code/?data=${card}&format=svg`
+					`https://api.qrserver.com/v1/create-qr-code/?data=${id}&format=svg`
 				)
 				.then(response => {
 					const qr_svg = response.data;
-					Cards.update({ qr_svg }, card[0].id).then(updated => {
+					Cards.update({ qr_svg }, id).then(updated => {
 						//added .id for postgres
 						res.status(201).json(updated);
 					});
