@@ -31,15 +31,14 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
 	let { username, password } = req.body;
 
-	Users.findBy({ username })
-		.first()
+	Users.findByUsername(username)
 		.then(user => {
 			if (user && bcrypt.compareSync(password, user.password)) {
 				const token = generateToken(user);
 				delete user.password;
 				res.status(200).json({
 					message: `Welcome ${user.username}`,
-					user,
+					...user,
 					token
 				});
 			} else {
