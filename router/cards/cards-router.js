@@ -34,6 +34,7 @@ router.get("/user/:id", restricted, (req, res) => {
 router.get("/qrcode/:id", (req, res) => {
 	res.setHeader("Content-Type", "image/svg+xml");
 	Cards.findById(req.params.id)
+		.first()
 		.then(card => {
 			res.end(card.qr_svg);
 		})
@@ -45,7 +46,10 @@ router.post("/", restricted, (req, res) => {
 
 	Cards.add(cardData)
 		.then(card => {
+			//Postgres
 			const id = card.id;
+			// //SEQLIE3
+			// const id = card[0]
 			axios
 				.post(
 					`https://api.qrserver.com/v1/create-qr-code/?data=${id}&format=svg`
@@ -53,7 +57,6 @@ router.post("/", restricted, (req, res) => {
 				.then(response => {
 					const qr_svg = response.data;
 					Cards.update({ qr_svg }, id).then(updated => {
-						//added .id for postgres
 						res.status(201).json(updated);
 					});
 				})
