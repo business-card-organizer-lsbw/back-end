@@ -13,6 +13,16 @@ router.get("/", restricted, (req, res) => {
 
 router.get("/:id", restricted, (req, res) => {
 	Cards.findById(req.params.id)
+		.first()
+		.then(card => {
+			res.status(200).json(card);
+		})
+		.catch(err => res.status(500).json(err));
+});
+
+//get by user id
+router.get("/:id", restricted, (req, res) => {
+	Cards.findById(req.params.id)
 		.then(card => {
 			res.status(200).json(card);
 		})
