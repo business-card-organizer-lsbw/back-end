@@ -23,19 +23,19 @@ function findById(id) {
 		.select("username", "id", "role");
 }
 
-//SQLITE3;
-async function add(user) {
-	return await db("users").insert(user);
-}
-
-// // Postgres
+// //SQLITE3;
 // async function add(user) {
-// 	const [newUser] = await db("users")
-// 		.insert(user)
-// 		.returning("*");
-
-// 	return newUser;
+// 	return await db("users").insert(user);
 // }
+
+// Postgres
+async function add(user) {
+	const [newUser] = await db("users")
+		.insert(user)
+		.returning("*");
+
+	return newUser;
+}
 
 function findByUsername(username) {
 	return db("users")

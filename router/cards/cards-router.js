@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const axios = require("axios");
 
 const Cards = require("./cards-model");
 const restricted = require("../auth/restricted-middleware");
@@ -21,21 +22,44 @@ router.get("/:id", restricted, (req, res) => {
 });
 
 //get by user id
-router.get("/:id", restricted, (req, res) => {
-	Cards.findById(req.params.id)
+router.get("/user/:id", restricted, (req, res) => {
+	Cards.findByUserId(req.params.id)
 		.then(card => {
 			res.status(200).json(card);
 		})
 		.catch(err => res.status(500).json(err));
 });
 
-router.post("/", (req, res) => {
+//get qr code
+router.get("/qrcode/:id", (req, res) => {
+	res.setHeader("Content-Type", "image/svg+xml");
+	Cards.findById(req.params.id)
+		.then(card => {
+			res.end(card.qr_svg);
+		})
+		.catch(err => res.status(500).json(err));
+});
+
+router.post("/", restricted, (req, res) => {
 	const cardData = req.body;
-	console.log(cardData);
 
 	Cards.add(cardData)
 		.then(card => {
-			res.status(201).json(card);
+			axios
+				.post(
+					`https://api.qrserver.com/v1/create-qr-code/?data=${card}&format=svg`
+				)
+				.then(response => {
+					const qr_svg = response.data;
+					Cards.update({ qr_svg }, card[0].id).then(updated => {
+						//added .id for postgres
+						res.status(201).json(updated);
+					});
+				})
+				.catch(err => {
+					console.log(err);
+					return err;
+				});
 		})
 		.catch(err => {
 			console.log(err);
@@ -43,7 +67,7 @@ router.post("/", (req, res) => {
 		});
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", restricted, (req, res) => {
 	const { id } = req.params;
 	const changes = req.body;
 

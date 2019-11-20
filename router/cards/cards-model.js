@@ -5,6 +5,7 @@ module.exports = {
 	find,
 	findBy,
 	findById,
+	findByUserId,
 	remove,
 	update
 };
@@ -19,6 +20,10 @@ function findBy(filter) {
 
 function findById(id) {
 	return db("cards").where({ id });
+}
+
+function findByUserId(user_id) {
+	return db("cards").where({ user_id });
 }
 
 // // SQLITE3
