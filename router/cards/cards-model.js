@@ -5,7 +5,7 @@ module.exports = {
 	find,
 	findBy,
 	findById,
-	findByFirstName,
+	findByUserId,
 	remove,
 	update
 };
@@ -19,15 +19,11 @@ function findBy(filter) {
 }
 
 function findById(id) {
-	return db("cards")
-		.where({ id })
-		.first();
+	return db("cards").where({ id });
 }
 
-function findByFirstName(first_name) {
-	return db("cards")
-		.where({ first_name })
-		.first();
+function findByUserId(user_id) {
+	return db("cards").where({ user_id });
 }
 
 // // SQLITE3
