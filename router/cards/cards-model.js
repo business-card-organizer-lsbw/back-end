@@ -41,8 +41,8 @@ async function add(card) {
 		.insert(card)
 		.returning("*");
 
-// 	return newCard;
-// }
+	return newCard;
+}
 
 // //SQLITE3
 // function update(changes, id) {
