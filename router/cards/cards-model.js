@@ -26,35 +26,35 @@ function findByUserId(user_id) {
 	return db("cards").where({ user_id });
 }
 
-// SQLITE3
-function add(card) {
-	return db("cards").insert(card);
-}
-
-// // Postgres
-// async function add(card) {
-// 	const [newCard] = await db("cards")
-// 		.insert(card)
-// 		.returning("*");
-
-// 	return newCard;
+// // SQLITE3
+// function add(card) {
+// 	return db("cards").insert(card);
 // }
 
-//SQLITE3
-function update(changes, id) {
-	return db("cards")
-		.where({ id })
-		.update(changes);
+// Postgres
+async function add(card) {
+	const [newCard] = await db("cards")
+		.insert(card)
+		.returning("*");
+
+	return newCard;
 }
 
-// // Postgres
-// async function update(updated, id) {
-// 	const [updatedCard] = await db("cards")
+// //SQLITE3
+// function update(changes, id) {
+// 	return db("cards")
 // 		.where({ id })
-// 		.update(updated)
-// 		.returning("*");
-// 	return updatedCard;
+// 		.update(changes);
 // }
+
+// Postgres
+async function update(updated, id) {
+	const [updatedCard] = await db("cards")
+		.where({ id })
+		.update(updated)
+		.returning("*");
+	return updatedCard;
+}
 
 function remove(id) {
 	return db("cards")

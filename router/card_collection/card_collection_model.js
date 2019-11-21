@@ -41,19 +41,19 @@ function findUserCollection(card_receiver) {
 		);
 }
 
-// For adding a card to a users collection
-function add(card) {
-	return db("cards_collection").insert(card);
-}
-
-// // Postgres
-// async function add(card) {
-// 	const [newCard] = await db("cards_collection")
-// 		.insert(card)
-// 		.returning("*");
-
-// 	return newCard;
+// // For adding a card to a users collection
+// function add(card) {
+// 	return db("cards_collection").insert(card);
 // }
+
+// Postgres
+async function add(card) {
+	const [newCard] = await db("cards_collection")
+		.insert(card)
+		.returning("*");
+
+	return newCard;
+}
 
 // //SQLITE3
 // function update(changes, id) {
