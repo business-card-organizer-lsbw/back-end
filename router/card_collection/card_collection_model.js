@@ -37,8 +37,7 @@ function findUserCollection(card_receiver) {
 			"zip",
 			"state",
 			"country",
-			"website",
-			"qr_svg"
+			"website"
 		);
 }
 
@@ -47,14 +46,14 @@ function add(card) {
 	return db("cards_collection").insert(card);
 }
 
-// Postgres
-async function add(card) {
-	const [newCard] = await db("cards_collection")
-		.insert(card)
-		.returning("*");
+// // Postgres
+// async function add(card) {
+// 	const [newCard] = await db("cards_collection")
+// 		.insert(card)
+// 		.returning("*");
 
-	return newCard;
-}
+// 	return newCard;
+// }
 
 // //SQLITE3
 // function update(changes, id) {

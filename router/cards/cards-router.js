@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const axios = require("axios");
 
 const Cards = require("./cards-model");
 const restricted = require("../auth/restricted-middleware");
@@ -30,40 +29,25 @@ router.get("/user/:id", restricted, (req, res) => {
 		.catch(err => res.status(500).json(err));
 });
 
-//get qr code
-router.get("/qrcode/:id", (req, res) => {
-	res.setHeader("Content-Type", "image/svg+xml");
-	Cards.findById(req.params.id)
-		.first()
-		.then(card => {
-			res.end(card.qr_svg);
-		})
-		.catch(err => res.status(500).json(err));
-});
-
-router.post("/", restricted, (req, res) => {
+router.put("/", (req, res) => {
 	const cardData = req.body;
 
 	Cards.add(cardData)
 		.then(card => {
-			//Postgres
-			const id = card.id;
-			// //SEQLIE3
-			// const id = card[0]
-			axios
-				.post(
-					`https://api.qrserver.com/v1/create-qr-code/?data=${id}&format=svg`
-				)
-				.then(response => {
-					const qr_svg = response.data;
-					Cards.update({ qr_svg }, id).then(updated => {
-						res.status(201).json(updated);
-					});
-				})
-				.catch(err => {
-					console.log(err);
-					return err;
-				});
+			res.status(201).json(card);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ message: "could not process request" });
+		});
+});
+
+router.post("/", (req, res) => {
+	const cardData = req.body;
+
+	Cards.add(cardData)
+		.then(card => {
+			res.status(201).json(card);
 		})
 		.catch(err => {
 			console.log(err);
@@ -90,16 +74,18 @@ router.put("/:id", restricted, (req, res) => {
 		});
 });
 
-router.delete("/:id", restricted, async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	const { id } = req.params;
 
 	try {
 		const deleted = await Cards.remove(id);
 
 		if (deleted) {
-			res.json({ removed: deleted });
+			return res.status(200).json({ removed: deleted });
 		} else {
-			res.status(404).json({ message: "Could not find Card with given ID" });
+			return res
+				.status(404)
+				.json({ message: "Could not find Card with given ID" });
 		}
 	} catch (err) {
 		res.status(500).json({ message: "Something went wrong" });
