@@ -15,18 +15,27 @@ describe("cards_collection_model", () => {
 			});
 			console.log(query);
 
-			const cards = await db("cards");
+			const cards = await db("cards_collection");
 
-			expect(cards).toHaveLength(0);
+			expect(cards).toHaveLength(1);
 		});
 	});
 	describe("remove()", () => {
 		it("should remove the card from the users collection", async () => {
+			await db("cards_collection").insert({
+				card_receiver: 1,
+				card_id: 1
+			});
+			await db("cards_collection").insert({
+				card_receiver: 1,
+				card_id: 2
+			});
+
 			const query = await Collection.remove(2);
 
-			const cards = await db("cards");
+			const cards = await db("cards_collection");
 
-			expect(cards).toHaveLength(0);
+			expect(cards).toHaveLength(1);
 		});
 	});
 });

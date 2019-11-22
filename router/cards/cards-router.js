@@ -29,7 +29,7 @@ router.get("/user/:id", restricted, (req, res) => {
 		.catch(err => res.status(500).json(err));
 });
 
-router.put("/", (req, res) => {
+router.put("/", restricted, (req, res) => {
 	const cardData = req.body;
 
 	Cards.add(cardData)
@@ -42,7 +42,7 @@ router.put("/", (req, res) => {
 		});
 });
 
-router.post("/", (req, res) => {
+router.post("/", restricted, (req, res) => {
 	const cardData = req.body;
 
 	Cards.add(cardData)
@@ -74,7 +74,7 @@ router.put("/:id", restricted, (req, res) => {
 		});
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", restricted, async (req, res) => {
 	const { id } = req.params;
 
 	try {

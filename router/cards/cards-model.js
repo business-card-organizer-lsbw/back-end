@@ -27,8 +27,8 @@ function findByUserId(user_id) {
 }
 
 // // SQLITE3
-// function add(card) {
-// 	return db("cards").insert(card);
+// async function add(card) {
+// 	return await db("cards").insert(card);
 // }
 
 // Postgres
