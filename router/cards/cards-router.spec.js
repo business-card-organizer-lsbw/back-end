@@ -1,30 +1,28 @@
-// const request = require("supertest");
+const request = require("supertest");
+const db = require("../../data/dbConfig");
+const express = require("express");
+const app = express();
+const cards = require("./cards-router");
 
-// const cards = require("./cards-router");
+app.use(cards);
 
-// describe("cards", () => {
-// 	it("db environment set to testing", () => {
-// 		expect(process.env.NODE_ENV).toBe("testing");
-// 	});
+describe("cards", () => {
+	beforeEach(async () => {
+		await db("cards").truncate();
+	});
+	it("db environment set to testing", () => {
+		expect(process.env.NODE_ENV).toBe("testing");
+	});
 
-// 	describe("POST /cards", () => {
-// 		it("should return a status of 201 Created", () => {
-// 			return request(cards)
-// 				.post("/cards")
-// 				.send({ user_id: 1 })
-// 				.then(res => {
-// 					expect(res.status).toBe(201);
-// 				});
-// 		});
-// 	});
+	describe("DELETE /:id", () => {
+		it("should return a status of 200 ok", async () => {
+			await db("cards").insert({
+				user_id: 1,
+				id: 1
+			});
+			const res = await request(app).delete("/1");
 
-// 	describe("DELETE /cards/:id", () => {
-// 		it("should return a status of 200 ok", () => {
-// 			return request(cards)
-// 				.delete("/1")
-// 				.then(res => {
-// 					expect(res.status).toBe(200);
-// 				});
-// 		});
-// 	});
-// });
+			expect(res.status).toBe(200);
+		});
+	});
+});
