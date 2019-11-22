@@ -41,7 +41,7 @@ function findUserCollection(card_receiver) {
 		);
 }
 
-// // For adding a card to a users collection
+// For adding a card to a users collection
 // function add(card) {
 // 	return db("cards_collection").insert(card);
 // }
